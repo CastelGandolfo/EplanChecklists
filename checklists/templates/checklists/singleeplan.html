@@ -1,0 +1,49 @@
+{% extends "checklists/base.html" %}
+
+{% block content %}
+    
+    <div id="projects-title-first">
+        <h2>
+            <a href="{% url 'singleproject' project.id %}">{{ project.title }}</a>  
+        - {{ eplan.title }}: <b>{{ eplan_devices.count }} </b>devices</h2> 
+    </div>
+    <div id="projects-title-second">
+         <h4>Status: {{selected_devices}} / {{checkpoint_devices}} 
+             
+            {% if progress_procentage < 30 %}
+                (<span id="percent-red">{{progress_procentage}}%</span>)
+            {% elif 30 <= progress_procentage and progress_procentage <= 60 %}
+                (<span id="percent-yellow">{{progress_procentage}}%</span>)
+            {% elif progress_procentage > 60 %}
+                (<span id="percent-green">{{progress_procentage}}%</span>)
+            {% endif %}
+
+             
+             
+        </h4>
+    </div>
+
+    <div id="project-content">
+        {% for eplan_device in eplan_devices %}
+
+            <div id="eplan-device">
+            
+                <a href="/projects/{{ project.id }}/{{ eplan.id }}/{{eplan_device.id}}"><h4>{{ eplan_device.title }}</h4></a>
+                <a href="/projects/{{ project.id }}/{{ eplan.id }}/{{eplan_device.id}}">Checkpoints - {{ eplan_device.checkpoint_count }}</a>
+                <a href="/projects/{{ project.id }}/{{ eplan.id }}/{{eplan_device.id}}">Status - 
+                
+                    {% if eplan_device.progress < 30 %}
+                        <span id="percent-red">{{eplan_device.progress}}%</span>
+                    {% elif 30 <= eplan_device.progress and eplan_device.progress <= 60 %}
+                        <span id="percent-yellow">{{eplan_device.progress}}%</span>
+                    {% elif eplan_device.progress > 60 %}
+                        <span id="percent-green">{{eplan_device.progress}}%</span>
+                    {% endif %}
+                    
+                </a>  
+            
+            </div>
+
+        {% endfor %} 
+    </div>
+ {% endblock %}

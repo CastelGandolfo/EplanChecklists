@@ -1,0 +1,38 @@
+{% extends "checklists/base.html" %}
+
+{% block content %}
+    
+    <div id="projects-title-first">
+        <h2>
+            <a href="{% url 'singleproject' project.id %}">{{ project.title }}</a> - 
+            <a href="{% url 'singleeplan' project.id eplan.id %}">{{ eplan.title }}</a> |
+            {% comment %} <a href="{% url 'eplandevice' project.id eplan.id eplan_device.id %}">{{ eplan_device.title }}</a> {% endcomment %}
+            {{ eplan_device.title }} 
+            
+        </h2> 
+    </div>
+    <div id="projects-title-second">
+        <h4>{{ eplan_device.selected_checklist_points.count }} / {{checkpoints.count}} completed</h4>
+    </div>
+
+    <div id="device-checkpoints">
+        {% for checkpoint in checkpoints %}
+            <form method="POST" action="{% url 'checkpoint' project.id eplan.id eplan_device.id checkpoint.id %}">
+                <div id="eplan-device">
+                    {% csrf_token %}
+                        {% if checkpoint.is_finished %}
+                            <input checked onChange="this.form.submit()" type="checkbox" id="is_finiehed" name="is_finiehed" >
+<!--                        <button type="submit">{{ checkpoint.title }}</button>-->
+                            {% comment %} {{ user.username}} {% endcomment %}
+                        {% else %}
+                            <input onChange="this.form.submit()" type="checkbox" name="is_finiehed"> 
+                        {% endif %}
+                        <a href="/projects/{{ project.id }}/{{ eplan.id }}/{{ eplan_device.id }}">{{ checkpoint.title }}</a>
+                        
+                        
+                        
+                </div>
+            </form>
+        {% endfor %}
+    </div>
+ {% endblock %}

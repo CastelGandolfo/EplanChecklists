@@ -1,0 +1,42 @@
+{% extends "checklists/base.html" %}
+
+{% block content %}
+    
+    <div id="projects-title-first">
+        <h2>{{ project.title }}: <b>{{ eplans.count }} </b>eplans</h2> 
+    </div>
+
+    <div id="projects-title-second">
+        <h4>Status: {{selected_eplans}} / {{checkpoint_eplans}}         
+            {% if progress_procentage < 30 %}
+                (<span id="percent-red">{{progress_procentage}}%</span>)
+            {% elif 30 <= progress_procentage and progress_procentage <= 60 %}
+                (<span id="percent-yellow">{{progress_procentage}}%</span>)
+            {% elif progress_procentage > 60 %}
+                (<span id="percent-green">{{progress_procentage}}%</span>)
+            {% endif %}        
+        </h4>
+    </div>
+
+    <div id="project-content">
+    {% for eplan in eplans %}
+
+    <div>
+        <a href="/projects/{{ project.id }}/{{ eplan.id }}"><h4>{{ eplan.title }}</h4></a>
+        <a href="/projects/{{ project.id }}/{{ eplan.id }}">Devices - {{ eplan.device_count }}</a>
+        <a href="/projects/{{ project.id }}/{{ eplan.id }}">Status -
+        
+            {% if eplan.progress < 30 %}
+                <span id="percent-red">{{eplan.progress}}%</span>
+            {% elif 30 <= eplan.progress and eplan.progress <= 60 %}
+                <span id="percent-yellow">{{eplan.progress}}%</span>
+            {% elif eplan.progress > 60 %}
+                <span id="percent-green">{{eplan.progress}}%</span>
+            {% endif %}
+                
+        </a>  
+    </div>
+        {% comment %} <div><a href="/project/{{ project.id }}/">{{ project.title }}</a></div> {% endcomment %}
+    {% endfor %}
+    </div>
+ {% endblock %}

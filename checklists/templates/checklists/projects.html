@@ -1,0 +1,45 @@
+{% extends "checklists/base.html" %}
+
+{% block content %}
+    
+    <div id="projects-title-first">
+        <h2>Current Projects: {{ projects.count }}</h2> 
+    </div>
+
+    <div id="projects-title-second"> 
+        <h4>Status: {{selected_projects}} / {{checkpoint_projects}} 
+        
+            {% if progress_procentage < 30 %}
+                (<span id="percent-red">{{progress_procentage}}%</span>)
+            {% elif 30 <= progress_procentage and progress_procentage <= 60 %}
+                (<span id="percent-yellow">{{progress_procentage}}%</span>)
+            {% elif progress_procentage > 60 %}
+                (<span id="percent-green">{{progress_procentage}}%</span>)
+            {% endif %} 
+
+        </h4>
+    </div>
+
+    <div id="project-content">
+    
+        {% for project in projects %}
+            <div>
+                <a href="/projects/{{ project.id }}/"><h4>{{ project.title }}</h4></a>
+                <a href="/projects/{{ project.id }}/">Eplans - {{ project.eplan_count }}</a>
+                <a href="/projects/{{ project.id }}/">Status - 
+                
+                    {% if project.progress < 30 %}
+                        <span id="percent-red">{{project.progress}}%</span>
+                    {% elif 30 <= project.progress and project.progress <= 60 %}
+                        <span id="percent-yellow">{{project.progress}}%</span>
+                    {% elif project.progress > 60 %}
+                        <span id="percent-green">{{project.progress}}%</span>
+                    {% endif %}
+                    
+                
+                </a>                
+            </div>
+            
+        {% endfor %}
+    </div>
+ {% endblock %}

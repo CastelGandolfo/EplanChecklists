@@ -1,0 +1,16 @@
+/* Kolory do progresu głównego */
+#projects-title-second #percent-red,
+#project-content a #percent-red,
+#project-content #eplan-device a #percent-red {
+  color: rgb(226, 12, 12);
+}
+#projects-title-second #percent-yellow,
+#project-content a #percent-yellow,
+#project-content #eplan-device a #percent-yellow {
+  color: rgb(212, 212, 83);
+}
+#projects-title-second #percent-green,
+#project-content a #percent-green,
+#project-content #eplan-device a #percent-green {
+  color: rgb(72, 165, 72);
+}
