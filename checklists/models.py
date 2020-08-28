@@ -62,6 +62,7 @@ class ChecklistPoint(models.Model):
     checkpoint_text = models.TextField(blank=True)
     is_finished = models.BooleanField(default=False)
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
+    user_edited = models.CharField(blank=True, max_length=100)
 
     def __str__(self):
         return self.title
@@ -71,3 +72,5 @@ class SelectedCheckpoint(models.Model):
     eplan_device = models.ForeignKey(EplanDevice, on_delete=models.CASCADE)
     checklist_point = models.ForeignKey(
         ChecklistPoint, on_delete=models.CASCADE)
+    user_edited = models.CharField(blank=True, max_length=100)
+

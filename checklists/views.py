@@ -2,13 +2,17 @@ from django.shortcuts import render
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Project, Eplan, Device, EplanDevice, ChecklistPoint, SelectedCheckpoint
 from itertools import chain
-
+from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User 
+from django.contrib.auth.decorators import login_required
 
 def home(request):
     return render(request, 'checklists/home.html')
 
 
 # /projects
+@login_required
 def projects(request):
     projects = Project.objects.all()
 
@@ -51,9 +55,9 @@ def projects(request):
  
     return render(request, 'checklists/projects.html', {"projects": projects, "selected_projects": selected_projects, "checkpoint_projects": checkpoint_projects, "progress_procentage": progress_procentage})
 
-
 # Pojedynczy projekt
 # /projects/1
+@login_required
 def singleproject(request, project_pk):
     # znalezienie projektu pk
     project = get_object_or_404(Project, pk=project_pk)
@@ -99,6 +103,7 @@ def singleproject(request, project_pk):
 
 # Pojedynczy eplan w projekcie
 # /projects/1/1
+@login_required
 def singleeplan(request, project_pk, eplan_pk):
     # znalezienie projektu pk
     project = get_object_or_404(Project, pk=project_pk)
@@ -140,6 +145,7 @@ def singleeplan(request, project_pk, eplan_pk):
 
 # Pojedyncze urządzenie w eplanie w projekcie
 # /projects/1/1/1
+@login_required
 def eplandevice(request, project_pk, eplan_pk, eplandevice_pk):
     # znalezienie projektu pk
     project = get_object_or_404(Project, pk=project_pk)
@@ -161,11 +167,13 @@ def eplandevice(request, project_pk, eplan_pk, eplandevice_pk):
     for checkpoint in checkpoints:
         if checkpoint in selected_checklist_points:
             checkpoint.is_finished = True
+            checkpoint.user_edited = SelectedCheckpoint.objects.filter(checklist_point=checkpoint).first().user_edited
+            print(checkpoint.user_edited)
         # print(checkpoint.is_finished)
 
     return render(request, 'checklists/eplandevice.html', {"checkpoints": checkpoints, "device": device, "eplan_device": eplan_device, "eplan": eplan, "project": project})
 
-
+@login_required
 def checkpoint(request, project_pk, eplan_pk, eplandevice_pk, checkpoint_pk):
     # znalezienie device do danego eplana
     eplan_device = get_object_or_404(EplanDevice, pk=eplandevice_pk)
@@ -183,7 +191,55 @@ def checkpoint(request, project_pk, eplan_pk, eplandevice_pk, checkpoint_pk):
     if checkpoint in selected_checklist_points:
         SelectedCheckpoint.objects.filter(checklist_point=checkpoint).delete()
     else:
-        cpoint = SelectedCheckpoint(eplan_device=eplan_device, checklist_point=checkpoint)
+        cpoint = SelectedCheckpoint(eplan_device=eplan_device, checklist_point=checkpoint, user_edited = request.user.username)
         cpoint.save()
 
     return redirect('eplandevice', project_pk, eplan_pk, eplandevice_pk)
+
+# /devices
+@login_required
+def genericdevices(request):
+    devices = Device.objects.all()
+
+    return render(request, 'checklists/devices.html', {"devices": devices})
+
+# /devices/1
+@login_required
+def singledevice(request, device_pk):
+    # znalezienie typu device
+    device = get_object_or_404(Device, pk=device_pk)
+    # device = Device.objects.filter(device = eplan_device)
+
+    # znalezienie checkpointów
+    checkpoints = ChecklistPoint.objects.filter(device=device)
+
+    
+    return render(request, 'checklists/singledevice.html', {"checkpoints": checkpoints, "device": device})
+
+
+
+def logoutuser(request):
+    # czesto przegladarki w momencie zaladowania strony tam gdzie się da robią get requesty, zeby bylo szybciej jak juz sobie klikniesz 
+    # if logout is get request chrome can kick out 
+    # we logout only for post request!!!
+    if request.method == "POST":
+        logout(request)
+        return redirect('home')
+
+
+def loginuser(request):
+    # Podobnie jak w przypadku tworzenia konta, przy GET request, z tą różnica ze zamiast UserCreationForm dostajemy AuthenticationForm
+    if request.method == 'GET':
+        return render(request, 'checklists/loginuser.html', {'form':AuthenticationForm()})
+    else:
+        # W przypadku login form nie mamy juz password1 i password2 tylko password bo jest tylko jeden
+        # importujemy sobie funkcje authenticate (podobnie jak w przypadku login/logout)
+        user = authenticate(request, username=request.POST['username'], password=request.POST['password'])
+        # sprawdzamy czy dostajemy jakiegos usera w zamian za username i password z login forma którego sobie utworzyliśmy
+        if user is None:
+            return render(request, 'checklists/loginuser.html', {'form':AuthenticationForm(), 'error':'Username and password did not match. Try again'})
+        else:
+            # jesli z funkcji authenticate dostajemy jakiegos usera wtedy mozemy go po prostu zalogowac i gitara
+            login(request, user)
+            #  no i przekierować do aktualnych zadań
+            return redirect('projects')

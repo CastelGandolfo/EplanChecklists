@@ -1,0 +1,20 @@
+{% extends "checklists/base.html" %} {% block content %}
+
+<div id="projects-title-first">
+  <h2><a href="#">{{ device.title }}</a></h2>
+</div>
+<div id="projects-title-second">
+  <h4>{{ checkpoints.count }} checkpoints</h4>
+</div>
+
+<div id="device-checkpoints">
+  {% for checkpoint in checkpoints %}
+  
+    <div id="eplan-device">
+      <div>{{ checkpoint.title }}</div>
+      </div>
+      
+  </form>
+  {% endfor %}
+</div>
+{% endblock %}

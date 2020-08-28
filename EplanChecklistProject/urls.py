@@ -22,6 +22,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='home'),
 
+    # AUTH
+    path('login/', views.loginuser, name='loginuser'),
+    path('logout/', views.logoutuser, name='logoutuser'),
+
+
     # Projects
     path('projects/', views.projects, name='projects'),
     # Single project
@@ -32,8 +37,14 @@ urlpatterns = [
     # Eplan device
     path('projects/<int:project_pk>/<int:eplan_pk>/<int:eplandevice_pk>',
          views.eplandevice, name='eplandevice'),
-
     # Device checkpoint
     path('projects/<int:project_pk>/<int:eplan_pk>/<int:eplandevice_pk>/<int:checkpoint_pk>',
          views.checkpoint, name='checkpoint'),
+
+
+    # Devices
+    path('devices/', views.genericdevices, name='genericdevices'),
+    # Single device
+    path('devices/<int:device_pk>/', views.singledevice, name='singledevice'),
+
 ]

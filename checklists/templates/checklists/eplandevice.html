@@ -19,17 +19,32 @@
         {% for checkpoint in checkpoints %}
             <form method="POST" action="{% url 'checkpoint' project.id eplan.id eplan_device.id checkpoint.id %}">
                 <div id="eplan-device">
+
+                    <div class="checkpoint_checked">
                     {% csrf_token %}
                         {% if checkpoint.is_finished %}
                             <input checked onChange="this.form.submit()" type="checkbox" id="is_finiehed" name="is_finiehed" >
-<!--                        <button type="submit">{{ checkpoint.title }}</button>-->
+    <!--                        <button type="submit">{{ checkpoint.title }}</button>-->
                             {% comment %} {{ user.username}} {% endcomment %}
                         {% else %}
                             <input onChange="this.form.submit()" type="checkbox" name="is_finiehed"> 
                         {% endif %}
-                        <a href="/projects/{{ project.id }}/{{ eplan.id }}/{{ eplan_device.id }}">{{ checkpoint.title }}</a>
-                        
-                        
+                    </div>
+
+                    
+                    {% comment %} <div class="check_checked">
+                    {% csrf_token %}
+                        {% if checkpoint.is_finished %}
+                            <input checked onChange="this.form.submit()" type="checkbox" id="is_finiehed" name="is_finiehed" >
+
+                        {% else %}
+                            <input onChange="this.form.submit()" type="checkbox" name="is_finiehed"> 
+                        {% endif %}
+                    </div> {% endcomment %}
+
+                    <div id="device_id"><a href="/projects/{{ project.id }}/{{ eplan.id }}/{{ eplan_device.id }}">{{ checkpoint.title }}</a></div>
+                    <div class="user_project">{{checkpoint.user_edited}}</div> 
+                    {% comment %} <div class="user_checker"></div>  {% endcomment %}
                         
                 </div>
             </form>

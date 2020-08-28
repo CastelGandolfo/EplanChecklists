@@ -10,13 +10,14 @@
     <div id="projects-title-second">
          <h4>Status: {{selected_devices}} / {{checkpoint_devices}} 
              
-            {% if progress_procentage < 30 %}
+            {% comment %} {% if progress_procentage < 30 %}
                 (<span id="percent-red">{{progress_procentage}}%</span>)
             {% elif 30 <= progress_procentage and progress_procentage <= 60 %}
                 (<span id="percent-yellow">{{progress_procentage}}%</span>)
             {% elif progress_procentage > 60 %}
                 (<span id="percent-green">{{progress_procentage}}%</span>)
-            {% endif %}
+            {% endif %}  {% endcomment %}
+
 
              
              

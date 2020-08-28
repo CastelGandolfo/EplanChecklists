@@ -10,6 +10,7 @@
 
     {% comment %} BASE CSS {% endcomment %}
     {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'checklists/base.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'checklists/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'checklists/utilities.css' %}">
     {% comment %} GOOGLE FONT {% endcomment %}
@@ -30,25 +31,40 @@
         {% comment %} <a class="nav-link navbar-light" href="#"><span class="sr-only">(current)</span></a> {% endcomment %}
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{% url 'projects' %}">PROJECTS</a>
+            <a class="nav-link" href="/projects">PROJECTS</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#"></a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">DEVICES</a>
+            <a class="nav-link" href="/devices">DEVICES</a>
           </li>
         </ul>
         <ul>
+        
+        {% if user.is_authenticated %}
           <span class="navbar-text">  
-            <a class="nav-link" href="#">Logged in as Przemysław Gawron</a>
+            <a class="nav-link" href="#">Logged in as {{user.username}}</a>
           </span>
           <span class="navbar-text">  
           |
           </span>
           <span class="navbar-text">  
-            <a class="nav-link" href="#">Logout</a>
+            <form class="nav-link" action="/logout" method="POST">
+                {% csrf_token %}
+
+                  <button type="submit">Logout</button>
+                </form>
           </span>
+
+          {% else %}
+
+            <span class="navbar-text">  
+              <a class="nav-link" href="/login">Login</a>
+            </span>
+            
+
+          {% endif %}
         </ul>
       </div>
     </nav>

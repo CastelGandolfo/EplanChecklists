@@ -1,37 +1,3 @@
-* {
-  margin: 0;
-  box-sizing: border-box;
-  color: #c6c6c6;
-  /* background-color: #f0f6f9; */
-  font-family: "Varela Round", sans-serif;
-  /* font-family: "Tajawal", sans-serif; */
-  /* background-color: #2b80aa; */
-}
-
-body {
-  background: url("/static/checklists/img/background.jpg") center center/cover
-    no-repeat fixed;
-}
-
-/* NAVBAR */
-#navbarText li a {
-  color: #c6c6c6;
-  font-size: 1.1rem;
-}
-
-#navbarText span a {
-  color: #c6c6c6;
-  font-size: 1.1rem;
-}
-
-#navbarText li a:hover {
-  opacity: 0.8;
-}
-
-#navbarText span a:hover {
-  opacity: 0.8;
-}
-
 /* HOME content */
 #content {
   /* position: absolute; */
@@ -40,9 +6,15 @@ body {
   display: flex;
   flex-wrap: wrap;
   /* align-content: center; */
-  margin-top: 20vh;
-  justify-content: center;
+  margin-top: 10vh;
+  flex-direction: column;
+  /* justify-content: center; */
   text-align: center;
+}
+
+#content form button {
+  background-color: rgba(143, 144, 145, 0.25);
+  width: 12vw;
 }
 
 /* Projects/devices - flexbox */
@@ -83,6 +55,7 @@ body {
   opacity: 0.8;
 }
 
+/* div zawierający boxy w siatce */
 #project-content {
   /* position: absolute; */
   width: 100vw;
@@ -94,6 +67,7 @@ body {
   text-align: center;
 }
 
+/* pojedynczy box np eplan */
 #project-content > div {
   width: 15vw;
   height: 20vh;
@@ -120,7 +94,7 @@ body {
   /* padding: 20px; */
 }
 
-/* Widok device w liscie */
+/* Widok device podobne boxy do projektów */
 #eplan-content {
   /* position: absolute; */
   width: 100vw;
@@ -133,6 +107,7 @@ body {
   text-align: center;
 }
 
+/* pojedynczy box z device */
 #eplan-content > div {
   width: 15vw;
   height: 10vh;
@@ -156,7 +131,7 @@ body {
 }
 
 /* Checkpointy z device device-checkpoints */
-
+/* box zawierający wszystkie checkpointy */
 #device-checkpoints {
   /* position: absolute; */
   width: 100vw;
@@ -165,17 +140,19 @@ body {
   flex-direction: column;
   flex-wrap: wrap;
   align-content: center;
-  justify-content: center;
+  justify-content: space-between;
   text-align: center;
 }
 
+/* pojedynczy checkpoint */
 #device-checkpoints div {
   width: 80vw;
-  height: 10vh;
-  margin: 15px;
+  height: 6vh;
+  margin: 10px 0;
   border-radius: 2%;
-  font-size: 1.3rem;
-  padding: 0 0 0 30px;
+  font-size: 1.2rem;
+  /* padding: 0 0 0 30px; */
+
   background-color: rgba(143, 144, 145, 0.25);
   /* opacity: 0.25; */
   /* color: rgb(0, 0, 0); */
@@ -185,10 +162,48 @@ body {
   align-items: center;
 }
 
+/* checkboxy do projektanta i sprawdzającecgo */
+#device-checkpoints div .checkpoint_checked,
+#device-checkpoints div .check_checked {
+  display: flex;
+  /* padding: 0 0 0 30px; */
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 1.3;
+  padding: 0 15px;
+  border: 1px solid rgba(179, 182, 187, 0.25);
+}
+#device-checkpoints div .checkpoint_checked {
+  padding: 0 10px 0 10px;
+}
+/* sam punkt checkboxa np +1+1+12930912, zajmuje najwiecej miejsca */
+#device-checkpoints div #device_id {
+  display: flex;
+  flex-shrink: 0.4;
+  padding: 0 0 0 30px;
+}
+
+/* miejsce na oznaczenie projektanta po zaznaczeniu checkboxa 1 */
+#device-checkpoints div .user_project {
+  margin-left: 5px;
+  padding: 0 0 0 15px;
+}
+/* miejsce na oznaczenie sprawdzajacego po zaznaczeniu checkboxa 2 */
+#device-checkpoints div .user_checker {
+  margin-left: 5px;
+  padding: 0 0 0 15px;
+}
+
+/* 
+#device-checkpoints div:first-child {
+  float: right;
+} */
+
 #device-checkpoints div a {
   color: #f4f4f4;
   text-decoration: none;
-  padding: 20px;
+  /* padding: 20px; */
 }
 
 input[type="checkbox"] {
