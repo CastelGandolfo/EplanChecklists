@@ -49,6 +49,7 @@ class EplanDevice(models.Model):
     selected_checklist_points = models.ManyToManyField(
         'ChecklistPoint', through='SelectedCheckpoint')
 
+
     checkpoint_count = models.IntegerField(default=0)
     progress = models.IntegerField(default=0)
 
@@ -61,8 +62,10 @@ class ChecklistPoint(models.Model):
     title = models.CharField(max_length=100)
     checkpoint_text = models.TextField(blank=True)
     is_finished = models.BooleanField(default=False)
+    is_verified = models.BooleanField(default=False)
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
     user_edited = models.CharField(blank=True, max_length=100)
+    user_verified = models.CharField(blank=True, max_length=100)
 
     def __str__(self):
         return self.title
@@ -73,4 +76,4 @@ class SelectedCheckpoint(models.Model):
     checklist_point = models.ForeignKey(
         ChecklistPoint, on_delete=models.CASCADE)
     user_edited = models.CharField(blank=True, max_length=100)
-
+    user_verified = models.CharField(blank=True, max_length=100)

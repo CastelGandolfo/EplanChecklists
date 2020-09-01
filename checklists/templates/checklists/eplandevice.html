@@ -17,17 +17,15 @@
 
     <div id="device-checkpoints">
         {% for checkpoint in checkpoints %}
-            <form method="POST" action="{% url 'checkpoint' project.id eplan.id eplan_device.id checkpoint.id %}">
+            <form method="POST" name="MyForm" action="{% url 'checkpoint' project.id eplan.id eplan_device.id checkpoint.id %}">
                 <div id="eplan-device">
 
                     <div class="checkpoint_checked">
                     {% csrf_token %}
                         {% if checkpoint.is_finished %}
-                            <input checked onChange="this.form.submit()" type="checkbox" id="is_finiehed" name="is_finiehed" >
-    <!--                        <button type="submit">{{ checkpoint.title }}</button>-->
-                            {% comment %} {{ user.username}} {% endcomment %}
+                            <input checked onChange="this.form.submit()" type="checkbox" name="finish" value="unchecked">
                         {% else %}
-                            <input onChange="this.form.submit()" type="checkbox" name="is_finiehed"> 
+                            <input onChange="this.form.submit()" type="checkbox" name="finish" value="checked"> 
                         {% endif %}
                     </div>
 

@@ -166,9 +166,13 @@ def eplandevice(request, project_pk, eplan_pk, eplandevice_pk):
 
     for checkpoint in checkpoints:
         if checkpoint in selected_checklist_points:
-            checkpoint.is_finished = True
-            checkpoint.user_edited = SelectedCheckpoint.objects.filter(checklist_point=checkpoint).first().user_edited
-            print(checkpoint.user_edited)
+            if not SelectedCheckpoint.objects.filter(checklist_point=checkpoint).first().user_edited == "":
+                checkpoint.is_finished = True
+                checkpoint.user_edited = SelectedCheckpoint.objects.filter(checklist_point=checkpoint).first().user_edited
+            if not SelectedCheckpoint.objects.filter(checklist_point=checkpoint).first().user_verified == "":
+                checkpoint.is_verified = True
+                checkpoint.user_verified = SelectedCheckpoint.objects.filter(checklist_point=checkpoint).first().user_verified
+          
         # print(checkpoint.is_finished)
 
     return render(request, 'checklists/eplandevice.html', {"checkpoints": checkpoints, "device": device, "eplan_device": eplan_device, "eplan": eplan, "project": project})
@@ -184,9 +188,18 @@ def checkpoint(request, project_pk, eplan_pk, eplandevice_pk, checkpoint_pk):
     # znalezienie checkpointa z forma
     checkpoint = ChecklistPoint.objects.get(pk=checkpoint_pk)
 
-    print(checkpoint)
-    print(selected_checklist_points)
+    # name = request.GET['name']
+    # form = MyForm(request.POST)
+    print(request.POST.get('finish', False))
 
+    # for item in request.POST:
+    #     print(item)
+
+    # try:
+    #     if request.POST['finish']:
+    #         print(request.POST['value'])
+    # except:
+    #     print("xx")
 
     if checkpoint in selected_checklist_points:
         SelectedCheckpoint.objects.filter(checklist_point=checkpoint).delete()
