@@ -6,6 +6,7 @@ from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User 
 from django.contrib.auth.decorators import login_required
+from .forms import CheckpointForm
 
 def home(request):
     return render(request, 'checklists/home.html')
@@ -194,6 +195,9 @@ def checkpoint(request, project_pk, eplan_pk, eplandevice_pk, checkpoint_pk):
         project = request.POST.get('finish', False)
         verify = request.POST.get('verify', False)
 
+
+        print(project)
+        print(verify)
         # print(request.POST.get('finish', False))
         # print(request.POST.get('verify', False))
 
@@ -257,7 +261,44 @@ def singledevice(request, device_pk):
     
     return render(request, 'checklists/singledevice.html', {"checkpoints": checkpoints, "device": device})
 
+# /devices/1 - tworzenie nowego checkpointa do device generycznego
+@login_required
+def createcheckpoint(request, device_pk):
 
+    device = get_object_or_404(Device, pk=device_pk)
+    # device = Device.objects.filter(device = eplan_device)
+
+    # znalezienie checkpointów
+    checkpoints = ChecklistPoint.objects.filter(device=device)
+
+    if request.method == 'GET':
+        return render(request, 'checklists/createcheckpoint.html', {'form':CheckpointForm()})
+    else:
+        try:
+            form = CheckpointForm(request.POST)
+            newtodo = form.save(commit=False)
+            newtodo.device = device
+            newtodo.save()
+            return render(request, 'checklists/singledevice.html', {"checkpoints": checkpoints, "device": device})
+        except ValueError:
+            return render(request, 'checklists/createcheckpoint.html', {'form':CheckpointForm(), 'error':'Bad data passed in. Try again.'})
+
+# /devices/1/1/delete - usuniecie checkpointa do urzadzenia generycznego
+@login_required
+def deletecheckpoint(request, device_pk, checkpoint_pk):
+
+    device = get_object_or_404(Device, pk=device_pk)
+    # device = Device.objects.filter(device = eplan_device)
+    checkpoints = ChecklistPoint.objects.filter(device=device)
+
+    # znalezienie checkpointów
+    checkpoint = ChecklistPoint.objects.filter(pk=checkpoint_pk).first()
+
+    if request.method == 'POST':
+        checkpoint.delete()
+        return render(request, 'checklists/singledevice.html', {"checkpoints": checkpoints, "device": device})
+    else:
+        return render(request, 'checklists/singledevice.html', {"checkpoints": checkpoints, "device": device})
 
 def logoutuser(request):
     # czesto przegladarki w momencie zaladowania strony tam gdzie się da robią get requesty, zeby bylo szybciej jak juz sobie klikniesz 

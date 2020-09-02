@@ -46,5 +46,9 @@ urlpatterns = [
     path('devices/', views.genericdevices, name='genericdevices'),
     # Single device
     path('devices/<int:device_pk>/', views.singledevice, name='singledevice'),
-
+    # Add new checkpoint for device
+    path('devices/<int:device_pk>/add', views.createcheckpoint, name='createcheckpoint'),
+    # Delete device
+    path('devices/<int:device_pk>/<int:checkpoint_pk>/delete', views.deletecheckpoint, name='deletecheckpoint'),
+    
 ]

@@ -4,7 +4,7 @@ from .models import Project, Eplan, Device, ChecklistPoint, EplanDevice, Selecte
 
 
 class AuthorAdmin(admin.ModelAdmin):
-    exclude  = ('progress', 'checkpoint_count', 'eplan_count', 'device_count', 'user_edited')
+    exclude  = ('progress', 'checkpoint_count', 'eplan_count', 'device_count', 'user_edited', 'user_verified')
 
 
 admin.site.register(Project, AuthorAdmin)

@@ -1,0 +1,48 @@
+/* Checkpointy z device device-checkpoints */
+/* box zawierający wszystkie checkpointy */
+#device-checkpoints {
+  /* position: absolute; */
+  width: 100vw;
+  height: auto;
+  display: flex;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  text-align: center;
+}
+
+#add_checkpoint {
+  margin-left: 10vw;
+  text-decoration: none;
+  font-size: 1.3rem;
+  /* background-color: rgba(143, 144, 145, 0.25); */
+  color: #f4f4f4;
+
+}
+
+/* pojedynczy checkpoint */
+#device-checkpoints #device-checkpoint {
+  width: 80vw;
+  height: 6vh;
+  margin: 10px 0;
+  border-radius: 2%;
+  font-size: 1.2rem; 
+  background-color: rgba(143, 144, 145, 0.25);
+
+  /* opacity: 0.25; */
+  /* color: rgb(0, 0, 0); */
+  display: flex;
+  text-align: center;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+#checkpoint-txt {
+ margin-left: 15px;
+}
+
+#delete-checkpoint {
+ margin-right: 15px;
+}

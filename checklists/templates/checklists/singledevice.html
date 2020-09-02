@@ -6,13 +6,24 @@
 <div id="projects-title-second">
   <h4>{{ checkpoints.count }} checkpoints</h4>
 </div>
+<a id="add_checkpoint" href="/devices/{{ device.id }}/add">Add question</a>
 
 <div id="device-checkpoints">
   {% for checkpoint in checkpoints %}
   
-    <div id="eplan-device">
-      <div>{{ checkpoint.title }}</div>
+    <div id="device-checkpoint">
+      <div id="checkpoint-txt">{{ checkpoint.title }}</div>
+      <div id="delete-checkpoint">
+
+      <form method="POST" name="MyForm" action="{% url 'deletecheckpoint' device.id checkpoint.id %}">
+          {% csrf_token %}
+          <input  onChange="this.form.submit()" type="checkbox" name="finish"
+                  value="projected">
+      </form>
       </div>
+      {% comment %} <a href="/devices/{{ device.id }}/{{ checkpoint.id }}/delete">x</a></div> {% endcomment %}
+    </div>
+    
       
   </form>
   {% endfor %}
