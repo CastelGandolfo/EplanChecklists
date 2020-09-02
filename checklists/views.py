@@ -179,35 +179,63 @@ def eplandevice(request, project_pk, eplan_pk, eplandevice_pk):
 
 @login_required
 def checkpoint(request, project_pk, eplan_pk, eplandevice_pk, checkpoint_pk):
-    # znalezienie device do danego eplana
-    eplan_device = get_object_or_404(EplanDevice, pk=eplandevice_pk)
+    if request.method == 'POST':
+        # znalezienie device do danego eplana
+        eplan_device = get_object_or_404(EplanDevice, pk=eplandevice_pk)
 
-    # selected checkpointy
-    selected_checklist_points = eplan_device.selected_checklist_points.all()
+        # selected checkpointy
+        selected_checklist_points = eplan_device.selected_checklist_points.all()
 
-    # znalezienie checkpointa z forma
-    checkpoint = ChecklistPoint.objects.get(pk=checkpoint_pk)
+        # znalezienie checkpointa z forma
+        checkpoint = ChecklistPoint.objects.get(pk=checkpoint_pk)
 
-    # name = request.GET['name']
-    # form = MyForm(request.POST)
-    print(request.POST.get('finish', False))
+        # name = request.GET['name']
+        # form = MyForm(request.POST)
+        project = request.POST.get('finish', False)
+        verify = request.POST.get('verify', False)
 
-    # for item in request.POST:
-    #     print(item)
+        # print(request.POST.get('finish', False))
+        # print(request.POST.get('verify', False))
 
-    # try:
-    #     if request.POST['finish']:
-    #         print(request.POST['value'])
-    # except:
-    #     print("xx")
+        if project:
+            if project == "projected":
+                cpoint = SelectedCheckpoint(eplan_device=eplan_device, checklist_point=checkpoint, user_edited = request.user.username)
+                cpoint.save()
+            else:
+                # usunięcie checkpointa
+                if checkpoint in selected_checklist_points:
+                    SelectedCheckpoint.objects.filter(checklist_point=checkpoint).delete()
+                
+        if verify:
+            if verify == "verified":
+                if SelectedCheckpoint.objects.filter(checklist_point=checkpoint).first():
+                    cpoint = SelectedCheckpoint.objects.filter(checklist_point=checkpoint).first()
+                    print(cpoint)
+                    cpoint.user_verified = request.user.username
+                    cpoint.save()
 
-    if checkpoint in selected_checklist_points:
-        SelectedCheckpoint.objects.filter(checklist_point=checkpoint).delete()
+                # print(cpoint.user_verified)
+                print("zweryfikowane")
+            else:
+                cpoint = SelectedCheckpoint.objects.filter(checklist_point=checkpoint).first()
+                cpoint.user_verified = ""
+                cpoint.save()
+                print("odweryfikowane")
+        # for item in request.POST:
+        #     print(item)
+
+        # print(request.POST)
+        # try:
+        #     if request.POST['finish']:
+        #         print(request.POST['value'])
+        # except:
+        #     print("xx")
+
+        
+
+        return redirect('eplandevice', project_pk, eplan_pk, eplandevice_pk)
     else:
-        cpoint = SelectedCheckpoint(eplan_device=eplan_device, checklist_point=checkpoint, user_edited = request.user.username)
-        cpoint.save()
-
-    return redirect('eplandevice', project_pk, eplan_pk, eplandevice_pk)
+        return redirect('eplandevice', project_pk, eplan_pk, eplandevice_pk)
 
 # /devices
 @login_required

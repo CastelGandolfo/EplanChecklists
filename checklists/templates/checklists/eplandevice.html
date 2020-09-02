@@ -17,35 +17,39 @@
 
     <div id="device-checkpoints">
         {% for checkpoint in checkpoints %}
-            <form method="POST" name="MyForm" action="{% url 'checkpoint' project.id eplan.id eplan_device.id checkpoint.id %}">
-                <div id="eplan-device">
+            
+            <div id="eplan-checkpoint">
 
-                    <div class="checkpoint_checked">
-                    {% csrf_token %}
-                        {% if checkpoint.is_finished %}
-                            <input checked onChange="this.form.submit()" type="checkbox" name="finish" value="unchecked">
-                        {% else %}
-                            <input onChange="this.form.submit()" type="checkbox" name="finish" value="checked"> 
-                        {% endif %}
-                    </div>
-
+                {% comment %} Zaznaczone checkpointy {% endcomment %}
+                          
+                    <form method="POST" name="MyForm" action="{% url 'checkpoint' project.id eplan.id eplan_device.id checkpoint.id %}">
+                        {% csrf_token %}
+                        <div class="checkpoint_checked">
+                            <input {% if checkpoint.is_finished %}checked{% endif %} onChange="this.form.submit()" type="checkbox" name="finish"
+                                value="projected">
+                            {% if checkpoint.is_finished %} <input type="hidden" name="finish" value="unprojected" /> {% endif %}
+                        </div> 
+                    </form>
                     
-                    {% comment %} <div class="check_checked">
-                    {% csrf_token %}
-                        {% if checkpoint.is_finished %}
-                            <input checked onChange="this.form.submit()" type="checkbox" id="is_finiehed" name="is_finiehed" >
 
-                        {% else %}
-                            <input onChange="this.form.submit()" type="checkbox" name="is_finiehed"> 
-                        {% endif %}
-                    </div> {% endcomment %}
-
-                    <div id="device_id"><a href="/projects/{{ project.id }}/{{ eplan.id }}/{{ eplan_device.id }}">{{ checkpoint.title }}</a></div>
-                    <div class="user_project">{{checkpoint.user_edited}}</div> 
-                    {% comment %} <div class="user_checker"></div>  {% endcomment %}
+                    {% comment %} Sprawdzenie checkpointów {% endcomment %}
+                    <form method="POST" name="MyForm" action="{% url 'checkpoint' project.id eplan.id eplan_device.id checkpoint.id %}">
+                        {% csrf_token %}
+                        <div class="checkpoint_checked">
+                            <input {% if checkpoint.is_verified %}checked{% endif %} onChange="this.form.submit()" type="checkbox" name="verify"
+                                value="verified">
+                            {% if checkpoint.is_verified %} <input type="hidden" name="verify" value="unverified" /> {% endif %}
+                        </div> 
+                    </form>   
                         
+                                    
+                <div id="device_id"<a href="/projects/{{ project.id }}/{{ eplan.id }}/{{ eplan_device.id }}">{{ checkpoint.title }}</a></div>
+                <div id="authors">
+                    <div class="user_project">Projektant: {{checkpoint.user_edited}} |</div> 
+                    <div class="user_project">Sprawdzający: {{checkpoint.user_verified}}</div> 
                 </div>
-            </form>
+            </div>
+
         {% endfor %}
     </div>
  {% endblock %}

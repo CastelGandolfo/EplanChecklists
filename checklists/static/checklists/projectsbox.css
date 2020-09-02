@@ -1,0 +1,76 @@
+/* *************PROJEKTY************ */
+/* div zawierający boxy w siatce */
+#project-content {
+  /* position: absolute; */
+  width: 100vw;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  /* align-content: center; */
+  justify-content: center;
+  text-align: center;
+}
+
+/* pojedynczy box np eplan */
+#project-content > div {
+  width: 15vw;
+  height: 20vh;
+  margin: 15px;
+  border-radius: 7%;
+  font-size: 1.3rem;
+  background-color: rgba(143, 144, 145, 0.25);
+  /* opacity: 0.25; */
+  /* color: rgb(0, 0, 0); */
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+#project-content > div:hover {
+  background-color: rgba(143, 144, 145, 0.15);
+}
+
+#project-content > div a {
+  color: #f4f4f4;
+  text-decoration: none;
+  /* padding: 20px; */
+}
+
+/* *************EPLANY************ */
+/* Widok device podobne boxy do projektów */
+#eplan-content {
+  /* position: absolute; */
+  width: 100vw;
+  height: auto;
+  display: flex;
+  /* flex-direction: column; */
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* pojedynczy box z device */
+#eplan-content > div {
+  width: 15vw;
+  height: 10vh;
+  margin: 15px;
+  border-radius: 2%;
+  font-size: 1.3rem;
+  /* padding: auto; */
+  background-color: rgba(143, 144, 145, 0.25);
+  /* opacity: 0.25; */
+  /* color: rgb(0, 0, 0); */
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+}
+
+#eplan-content > div a {
+  color: #f4f4f4;
+  text-decoration: none;
+  padding: 20px;
+}

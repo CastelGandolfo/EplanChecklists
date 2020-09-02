@@ -17,34 +17,37 @@
             {% elif progress_procentage > 60 %}
                 (<span id="percent-green">{{progress_procentage}}%</span>)
             {% endif %} 
-
-
-             
-             
+  
         </h4>
     </div>
+    
+    <div><input type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for device.."></div>
 
-    <div id="project-content">
+    <div id="eplan-devices">
         {% for eplan_device in eplan_devices %}
 
             <div id="eplan-device">
             
-                <a href="/projects/{{ project.id }}/{{ eplan.id }}/{{eplan_device.id}}"><h4>{{ eplan_device.title }}</h4></a>
-                <a href="/projects/{{ project.id }}/{{ eplan.id }}/{{eplan_device.id}}">Checkpoints - {{ eplan_device.checkpoint_count }}</a>
-                <a href="/projects/{{ project.id }}/{{ eplan.id }}/{{eplan_device.id}}">Status - 
-                
-                    {% if eplan_device.progress < 30 %}
-                        <span id="percent-red">{{eplan_device.progress}}%</span>
-                    {% elif 30 <= eplan_device.progress and eplan_device.progress <= 60 %}
-                        <span id="percent-yellow">{{eplan_device.progress}}%</span>
-                    {% elif eplan_device.progress > 60 %}
-                        <span id="percent-green">{{eplan_device.progress}}%</span>
-                    {% endif %}
+                <div id="device_id"><a href="/projects/{{ project.id }}/{{ eplan.id }}/{{eplan_device.id}}"><h4>{{ eplan_device.title }}</h4></a></div>
+                {% comment %} <a href="/projects/{{ project.id }}/{{ eplan.id }}/{{eplan_device.id}}">Checkpoints - {{ eplan_device.checkpoint_count }}</a> {% endcomment %}
+                <div id="device_status">
+                    <a href="/projects/{{ project.id }}/{{ eplan.id }}/{{eplan_device.id}}"> 
                     
-                </a>  
+                        {% if eplan_device.progress < 30 %}
+                            <span id="percent-red">{{eplan_device.progress}}%</span>
+                        {% elif 30 <= eplan_device.progress and eplan_device.progress <= 60 %}
+                            <span id="percent-yellow">{{eplan_device.progress}}%</span>
+                        {% elif eplan_device.progress > 60 %}
+                            <span id="percent-green">{{eplan_device.progress}}%</span>
+                        {% endif %}                        
+                    </a>  
+                </div>
             
             </div>
 
         {% endfor %} 
     </div>
+
+     {% load static %}
+    <script src="{% static 'app.js' %}"></script>
  {% endblock %}
